@@ -18,6 +18,7 @@ const App = () =>
   }, []);
   const notesToShow = showAll ? notes : notes.filter(note => note.import);
 
+  // Here's the branch test
   const addNote = (event) =>
   {
     event.preventDefault();
