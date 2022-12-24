@@ -4,24 +4,20 @@ import axios from "axios";
 
 const App = () =>
 {
-  // Branch Test
-	//This is the second branch test.
+  // State controllers
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("A New Note...");
   const [showAll, setShowAll] = useState(true);
 
+  //Effect to run once each re-render to get the data from the db.json server
   useEffect(() => {
-    console.log("--Effect--");
     axios.get("http://localhost:3001/notes")
     .then(response => {
-      console.log("--Promise F--");
       setNotes(response.data);
     })
   }, []);
-  //console.log("--Render--");
   const notesToShow = showAll ? notes : notes.filter(note => note.import);
 
-  //console.log(notes);
   const addNote = (event) =>
   {
     event.preventDefault();
@@ -35,10 +31,9 @@ const App = () =>
     setNotes(notes.concat(noteObject));
     setNewNote('');
   }
-
+  //Controller for the text box as it is a controlled component
   const handleNoteChange = (event) =>
   {
-    console.log(event.target.value);
     setNewNote(event.target.value);
   }
 
