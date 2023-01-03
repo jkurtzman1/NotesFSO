@@ -1,7 +1,6 @@
 import Note from "./components/Note";
 import { useEffect, useState } from "react";
-import axios from "axios";
-
+import noteService from "./services/notes.js"
 const App = () =>
 {
   // State controllers
@@ -11,12 +10,13 @@ const App = () =>
 
   //Effect to run once each re-render to get the data from the db.json server
   useEffect(() => {
-    axios.get("http://localhost:3001/notes")
-    .then(response => {
-      setNotes(response.data);
+    noteService.getAll()
+    .then(initalNotes => {
+      setNotes(initalNotes);
     })
   }, []);
-  const notesToShow = showAll ? notes : notes.filter(note => note.import);
+
+  const notesToShow = showAll ? notes : notes.filter(note => note.important);
 
   // Here's the branch test
   const addNote = (event) =>
@@ -26,16 +26,30 @@ const App = () =>
       id: notes.length + 1,
       content: newNote,
       date: new Date().toISOString(),
-      import: Math.random() < 0.5
+      important: Math.random() < 0.5
     };
 
-    setNotes(notes.concat(noteObject));
+    //setNotes(notes.concat(noteObject));
+    //Using axios now to update the note object
+    noteService.create(noteObject)
+         .then(returnedNote => {setNotes([...notes, returnedNote])});
     setNewNote('');
   }
   //Controller for the text box as it is a controlled component
   const handleNoteChange = (event) =>
   {
     setNewNote(event.target.value);
+  }
+
+  const toggleImportanceOf = id => {
+    //const url = `http://localhost:3001/notes/${id}`;
+    const note = notes.find(note => note.id === id);
+    const changedNote = {...note, important: !note.important};
+
+    noteService.update(id, changedNote).then(returnedNote => {
+      setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    });
+
   }
 
   return(
@@ -47,7 +61,7 @@ const App = () =>
         </button>
         <ul>
           {notesToShow.map(note => 
-            <Note key={note.id} note={note} />
+            <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
           )}
         </ul>
       </div>
