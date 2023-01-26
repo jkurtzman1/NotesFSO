@@ -29,12 +29,6 @@
       "content": "New Note",
       "date": "2023-01-03T22:02:28.814Z",
       "important": true
-    },
-    {
-      "id": 6,
-      "content": "A New Note...",
-      "date": "2023-01-03T22:16:55.925Z",
-      "important": false
     }
   ]
 }
