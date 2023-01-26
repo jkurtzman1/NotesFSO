@@ -22,7 +22,7 @@ const Footer = () =>
 const App = () =>
 {
   // State controllers
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(null);
   const [newNote, setNewNote] = useState("A New Note...");
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState("Some Error...");
@@ -35,6 +35,10 @@ const App = () =>
     })
   }, []);
 
+  if(notes == null)
+  {
+    return null;
+  }
   const notesToShow = showAll ? notes : notes.filter(note => note.important);
 
   // Here's the branch test
