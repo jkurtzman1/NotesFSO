@@ -1,12 +1,31 @@
 import Note from "./components/Note";
+import Notification from "./components/Notification";
 import { useEffect, useState } from "react";
 import noteService from "./services/notes.js"
+
+const Footer = () =>
+{
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+
+  return(
+    <div style={footerStyle}>
+      <br />
+      <em>Note App, Jason Kurtzman</em>
+    </div>
+  );
+}
+
 const App = () =>
 {
   // State controllers
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("A New Note...");
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("Some Error...");
 
   //Effect to run once each re-render to get the data from the db.json server
   useEffect(() => {
@@ -48,6 +67,9 @@ const App = () =>
 
     noteService.update(id, changedNote).then(returnedNote => {
       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    }).catch(error => {setErrorMessage(`Note ${note.content} was already deleted!`)
+                       setTimeout(() => {setErrorMessage(null)}, 5000)
+                       setNotes(notes.filter(n => n.id !== id))
     });
 
   }
@@ -56,6 +78,7 @@ const App = () =>
     <>
       <div>
         <h1>Notes</h1>
+        <Notification message={errorMessage} />
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? "Important" : "All"}
         </button>
@@ -71,6 +94,7 @@ const App = () =>
             <button type="submit">Save</button>
         </form>
       </div>
+      <Footer />
     </>
   );
 }
