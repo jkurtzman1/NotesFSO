@@ -5,7 +5,7 @@ const baseURL = "http://localhost:3001/notes"
 const getAll = () =>
 {
     const req = axios.get(baseURL);
-    return req.then(ress => res.data);
+    return req.then(res => res.data);
 }
 
 const create = (newObject) =>
