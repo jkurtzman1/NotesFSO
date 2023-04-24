@@ -1,26 +1,11 @@
 import Note from "./components/Note";
+import Footer from "./components/Footer";
 import Notification from "./components/Notification";
 import { useEffect, useState } from "react";
 import noteService from "./services/notes.js"
 
 // This is my new Branch!
 //Aint this so cool!
-
-const Footer = () =>
-{
-  const footerStyle = {
-    color: 'green',
-    fontStyle: 'italic',
-    fontSize: 16
-  }
-
-  return(
-    <div style={footerStyle}>
-      <br />
-      <em>Note App, Jason Kurtzman</em>
-    </div>
-  );
-}
 
 const App = () =>
 {
@@ -85,7 +70,7 @@ const App = () =>
     <>
       <div>
         <h1>Notes</h1>
-        {errorMessage != "" ? <Notification message={errorMessage} /> : <></>}
+        {errorMessage !== "" ? <Notification message={errorMessage} /> : <></>}
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? "Important" : "All"}
         </button>
