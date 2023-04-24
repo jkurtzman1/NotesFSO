@@ -28,7 +28,7 @@ const App = () =>
   const [notes, setNotes] = useState(null);
   const [newNote, setNewNote] = useState("A New Note...");
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("Some Error...");
+  const [errorMessage, setErrorMessage] = useState("");
 
   //Effect to run once each re-render to get the data from the db.json server
   useEffect(() => {
@@ -85,7 +85,7 @@ const App = () =>
     <>
       <div>
         <h1>Notes</h1>
-        <Notification message={errorMessage} />
+        {errorMessage != "" ? <Notification message={errorMessage} /> : <></>}
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? "Important" : "All"}
         </button>
